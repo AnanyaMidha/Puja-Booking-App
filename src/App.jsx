@@ -6,6 +6,7 @@ export default function App() {
   const [filter, setFilter] = useState('');
   const [toast, setToast] = useState(false);
   const [currentUser, setCurrentUser] = useState('');
+  const [tempName, setTempName] = useState('');
 
   const handleBook = () => {
     setToast(true);
@@ -16,15 +17,15 @@ export default function App() {
     <div>
       <h1>Puja Booking App</h1>
 
-      {/* 👇 Ask user name if not provided */}
       {!currentUser ? (
         <div>
           <label>Enter Your Name to Continue:</label>
           <input
-            value={currentUser}
-            onChange={(e) => setCurrentUser(e.target.value)}
-            placeholder="Your name"
+            value={tempName}
+            onChange={(e) => setTempName(e.target.value)}
+            placeholder="Your full name"
           />
+          <button onClick={() => setCurrentUser(tempName)}>Continue</button>
         </div>
       ) : (
         <>
@@ -41,7 +42,6 @@ export default function App() {
             </select>
           </div>
 
-          {/* 👇 Pass currentUser to PujaList */}
           <PujaList filter={filter} currentUser={currentUser} />
         </>
       )}
