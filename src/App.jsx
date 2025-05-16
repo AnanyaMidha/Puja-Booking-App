@@ -1,16 +1,19 @@
 import { useState } from 'react';
 import BookingForm from './components/BookingForm';
 import PujaList from './components/PujaList';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function App() {
   const [filter, setFilter] = useState('');
-  const [toast, setToast] = useState(false);
   const [currentUser, setCurrentUser] = useState('');
   const [tempName, setTempName] = useState('');
 
   const handleBook = () => {
-    setToast(true);
-    setTimeout(() => setToast(false), 3000);
+    toast.success("✅ Puja booked successfully!", {
+      position: "top-center",
+      autoClose: 3000,
+    });
   };
 
   return (
@@ -30,7 +33,6 @@ export default function App() {
       ) : (
         <>
           <BookingForm onBook={handleBook} currentUser={currentUser} />
-          {toast && <div className="toast">✅ Puja booked successfully!</div>}
 
           <div>
             <label>Filter by Puja Type:</label>
@@ -45,6 +47,9 @@ export default function App() {
           <PujaList filter={filter} currentUser={currentUser} />
         </>
       )}
+
+      {/* Toast container */}
+      <ToastContainer />
     </div>
   );
 }

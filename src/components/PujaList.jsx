@@ -19,7 +19,6 @@ export default function PujaList({ filter, currentUser }) {
         return () => unsub();
     }, []);
 
-    // ❗ Filter bookings only for the current user
     const userBookings = bookings.filter((b) => b.name === currentUser);
 
     const upcoming = userBookings.filter(
@@ -31,25 +30,49 @@ export default function PujaList({ filter, currentUser }) {
     );
 
     return (
-        <>
-            <h3>Upcoming Pujas</h3>
-            {upcoming.length === 0 ? <p>No upcoming pujas.</p> : null}
-            {upcoming.map((b) => (
-                <div key={b.id}>
-                    <strong>{b.pujaType}</strong> for {b.name} on{' '}
-                    {b.datetime.toLocaleString()}
-                    <p>{b.notes}</p>
-                </div>
-            ))}
+        <div style={{ marginTop: '2rem' }}>
+            <h2>📅 Upcoming Pujas</h2>
+            {upcoming.length === 0 ? (
+                <p>No upcoming pujas.</p>
+            ) : (
+                upcoming.map((b) => (
+                    <div
+                        key={b.id}
+                        style={{
+                            border: '2px solid #4caf50',
+                            backgroundColor: '#e8f5e9',
+                            padding: '1rem',
+                            borderRadius: '10px',
+                            marginBottom: '1rem',
+                        }}
+                    >
+                        <strong>{b.pujaType}</strong> for {b.name} <br />
+                        🕒 {b.datetime.toLocaleString()}
+                        {b.notes && <p>📝 {b.notes}</p>}
+                    </div>
+                ))
+            )}
 
-            <h3>Past Pujas</h3>
-            {past.length === 0 ? <p>No past pujas.</p> : null}
-            {past.map((b) => (
-                <div key={b.id}>
-                    <strong>{b.pujaType}</strong> for {b.name} on{' '}
-                    {b.datetime.toLocaleString()}
-                </div>
-            ))}
-        </>
+            <h2 style={{ marginTop: '2rem' }}>📜 Past Pujas</h2>
+            {past.length === 0 ? (
+                <p>No past pujas.</p>
+            ) : (
+                past.map((b) => (
+                    <div
+                        key={b.id}
+                        style={{
+                            border: '2px solid #ccc',
+                            backgroundColor: '#f5f5f5',
+                            padding: '1rem',
+                            borderRadius: '10px',
+                            marginBottom: '1rem',
+                        }}
+                    >
+                        <strong>{b.pujaType}</strong> for {b.name} <br />
+                        🕒 {b.datetime.toLocaleString()}
+                    </div>
+                ))
+            )}
+        </div>
     );
 }
