@@ -4,29 +4,46 @@ import { collection, addDoc, Timestamp } from 'firebase/firestore';
 
 export default function BookingForm({ onBook, currentUser }) {
     const [form, setForm] = useState({
+        name: currentUser || '',
         pujaType: '',
         datetime: '',
         notes: ''
     });
 
-    const handleChange = (e) =>
+    // Update form state properly
+    const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Final check before submission
+        if (!form.pujaType || !form.datetime) {
+            alert('Please select puja type and date/time.');
+            return;
+        }
+
         await addDoc(collection(db, 'bookings'), {
-            name: currentUser, // Automatically use the logged-in user
-            pujaType: form.pujaType,
-            datetime: Timestamp.fromDate(new Date(form.datetime)),
-            notes: form.notes
+            ...form,
+            datetime: Timestamp.fromDate(new Date(form.datetime))
         });
-        setForm({ pujaType: '', datetime: '', notes: '' });
+
+        setForm({
+            name: currentUser,
+            pujaType: '',
+            datetime: '',
+            notes: ''
+        });
+
         onBook();
     };
 
     return (
         <form onSubmit={handleSubmit}>
-            {/* Removed name input since user is auto-filled */}
+            {/* 👇 Show the name but don't allow editing */}
+            <input name="name" value={currentUser} disabled />
+
             <select
                 name="pujaType"
                 value={form.pujaType}
@@ -34,9 +51,9 @@ export default function BookingForm({ onBook, currentUser }) {
                 required
             >
                 <option value="">Select Puja</option>
-                <option>Grihapravesh</option>
-                <option>Lakshmi Puja</option>
-                <option>Satyanarayan Puja</option>
+                <option value="Grihapravesh">Grihapravesh</option>
+                <option value="Lakshmi Puja">Lakshmi Puja</option>
+                <option value="Satyanarayan Puja">Satyanarayan Puja</option>
             </select>
 
             <input

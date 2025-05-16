@@ -19,7 +19,7 @@ export default function PujaList({ filter, currentUser }) {
         return () => unsub();
     }, []);
 
-    // 👇 Filter only this user's bookings
+    // ❗ Filter bookings only for the current user
     const userBookings = bookings.filter((b) => b.name === currentUser);
 
     const upcoming = userBookings.filter(
